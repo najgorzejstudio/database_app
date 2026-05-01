@@ -28,16 +28,16 @@ public class Address {
 
     public static Address create(Scanner scanner) {
 
-        System.out.print("Street: ");
+        System.out.print("Enter street: ");
         String street = scanner.nextLine();
 
-        System.out.print("Street number: ");
+        System.out.print("Enter street number: ");
         String streetNumber = scanner.nextLine();
 
-        System.out.print("City: ");
+        System.out.print("Enter city: ");
         String city = scanner.nextLine();
 
-        System.out.print("ZIP code: ");
+        System.out.print("Enter ZIP code: ");
         String zip = scanner.nextLine();
 
         return new Address(street, streetNumber, city, zip);

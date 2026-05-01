@@ -1,4 +1,8 @@
 package database_app;
+import database_app.handlers.HandlerInsert;
+import database_app.handlers.HandlerShow;
+import database_app.handlers.HandlerUpdate;
+
 import java.util.Scanner;
 
 

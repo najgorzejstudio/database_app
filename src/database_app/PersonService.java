@@ -99,7 +99,7 @@ public class PersonService {
 
     public static void insertEmployee(Employee e) {
 
-        String sql = "INSERT INTO tenants (id, branch_id, position, salary) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO employees (id, branch_id, position, salary) VALUES (?, ?, ?, ?)";
 
         try{
             Connection conn = DatabaseConnect.getConnection();
@@ -120,7 +120,7 @@ public class PersonService {
 
             stmt.executeUpdate();
 
-            System.out.println("Tenant inserted successfully");
+            System.out.println("Employee inserted successfully");
 
             stmt.close();
             conn.close();

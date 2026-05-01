@@ -30,7 +30,7 @@ public class Employee {
         System.out.print("Enter salary (or leave empty): ");
         Integer salary = readIntOrNull(scanner);
 
-        System.out.print("Enter branch id: ");
+        System.out.print("Enter branch id (or leave empty): ");
         Integer branchId = readIntOrNull(scanner);
 
         return new Employee(personId, branchId, position, salary);
