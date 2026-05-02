@@ -200,7 +200,7 @@ public class PersonService {
             stmt.close();
             conn.close();
 
-            System.out.println("Employee updated.");
+            System.out.println("Employee updated successfully");
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -308,7 +308,7 @@ public class PersonService {
             stmt.close();
             conn.close();
 
-            System.out.println("Person updated.");
+            System.out.println("Person updated successfully");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -332,7 +332,7 @@ public class PersonService {
             stmt.close();
             conn.close();
 
-            System.out.println("Tenant updated.");
+            System.out.println("Tenant updated successfully");
 
         } catch (Exception e) {
             e.printStackTrace();

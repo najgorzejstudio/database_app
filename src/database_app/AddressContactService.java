@@ -222,7 +222,7 @@ public class AddressContactService {
             int rows = stmt.executeUpdate();
 
             if (rows > 0) {
-                System.out.println("Email updated.");
+                System.out.println("Email updated successfully");
             } else {
                 System.out.println("Email ID not found.");
             }
@@ -276,7 +276,7 @@ public class AddressContactService {
             int rows = stmt.executeUpdate();
 
             if (rows > 0) {
-                System.out.println("Phone updated.");
+                System.out.println("Phone updated successfully ");
             } else {
                 System.out.println("Phone ID not found.");
             }
@@ -324,7 +324,7 @@ public class AddressContactService {
             int rows = stmt.executeUpdate();
 
             if (rows > 0) {
-                System.out.println("Company email updated.");
+                System.out.println("Company email updated successfully");
             } else {
                 System.out.println("Email ID not found.");
             }
@@ -369,7 +369,7 @@ public class AddressContactService {
             int rows = stmt.executeUpdate();
 
             if (rows > 0) {
-                System.out.println("Company phone updated.");
+                System.out.println("Company phone updated successfully");
             } else {
                 System.out.println("Phone ID not found.");
             }
@@ -414,9 +414,9 @@ public class AddressContactService {
             int rows = stmt.executeUpdate();
 
             if (rows > 0) {
-                System.out.println("Branch email updated.");
+                System.out.println("Branch email updated successfully");
             } else {
-                System.out.println("Email ID not found.");
+                System.out.println("Email ID not found ");
             }
 
         } catch (Exception e) {
@@ -459,7 +459,7 @@ public class AddressContactService {
             int rows = stmt.executeUpdate();
 
             if (rows > 0) {
-                System.out.println("Branch phone updated.");
+                System.out.println("Branch phone updated successfully");
             } else {
                 System.out.println("Phone ID not found.");
             }
@@ -529,7 +529,7 @@ public class AddressContactService {
             stmt.close();
             conn.close();
 
-            System.out.println("Address updated.");
+            System.out.println("Address updated successfully");
 
         } catch (Exception e) {
             e.printStackTrace();

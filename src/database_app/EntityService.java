@@ -372,20 +372,30 @@ public class EntityService {
         }
     }
 
-    public static void insertAgreement(String start_date, String end_date, int o_id, String type, int t_id, int p_id) {
+    public static void insertAgreement(Agreement a) {
 
-        String sql = "INSERT INTO agreements (signing_date, end_date, owner_id,owner_type, tenant_id, property_id) VALUES (?,?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO agreements (signing_date, end_date, owner_id, owner_type, tenant_id, property_id) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try{
+        try {
             Connection conn = DatabaseConnect.getConnection();
 
-            PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            stmt.setString(1, start_date);
-            stmt.setString(2, end_date);
-            stmt.setInt(3, o_id);
-            stmt.setString(4, type);
-            stmt.setInt(5, t_id);
-            stmt.setInt(6, p_id);
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            // dates (correct way)
+            stmt.setDate(1, java.sql.Date.valueOf(a.getSigningDate()));
+            stmt.setDate(2, java.sql.Date.valueOf(a.getEndDate()));
+
+            // owner (handle null properly)
+            if (a.getOwnerId() == null) {
+                stmt.setNull(3, java.sql.Types.INTEGER);
+                stmt.setNull(4, java.sql.Types.VARCHAR);
+            } else {
+                stmt.setInt(3, a.getOwnerId());
+                stmt.setString(4, a.getOwnerType());
+            }
+
+            stmt.setInt(5, a.getTenantId());
+            stmt.setInt(6, a.getPropertyId());
 
             stmt.executeUpdate();
 
@@ -393,7 +403,8 @@ public class EntityService {
 
             stmt.close();
             conn.close();
-        }catch (Exception e){
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -425,7 +436,8 @@ public class EntityService {
                         endDate,
                         rs.getInt("owner_id"),
                         rs.getInt("tenant_id"),
-                        rs.getInt("property_id")
+                        rs.getInt("property_id"),
+                        rs.getString("owner_type")
                 );
 
                 a.setId(rs.getInt("id"));
@@ -470,16 +482,9 @@ public class EntityService {
                 stmt.setDate(2, java.sql.Date.valueOf(a.getEndDate()));
             }
 
-            // owner_id
             stmt.setInt(3, a.getOwnerId());
-
-            // tenant_id
             stmt.setInt(4, a.getTenantId());
-
-            // property_id
             stmt.setInt(5, a.getPropertyId());
-
-            // WHERE id
             stmt.setInt(6, a.getId());
 
             stmt.executeUpdate();
@@ -487,7 +492,7 @@ public class EntityService {
             stmt.close();
             conn.close();
 
-            System.out.println("Agreement updated.");
+            System.out.println("Agreement updated successfully");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -596,7 +601,98 @@ public class EntityService {
             stmt.close();
             conn.close();
 
-            System.out.println("Branch updated.");
+            System.out.println("Branch updated successfully");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void insertViewing(Viewing v) {
+
+        String sql = "INSERT INTO viewings (property_id, tenant_id, date) VALUES (?, ?, ?)";
+
+        try {
+            Connection conn = DatabaseConnect.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setInt(1, v.getPropertyId());
+            stmt.setInt(2, v.getTenantId());
+
+            if (v.getDate() == null) {
+                stmt.setNull(3, java.sql.Types.DATE);
+            } else {
+                stmt.setDate(3, java.sql.Date.valueOf(v.getDate()));
+            }
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            conn.close();
+
+            System.out.println("Viewing inserted successfully");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void showAllProperties() {
+
+        String sql = """
+        SELECT p.id, p.type, p.size,
+               CASE WHEN a.id IS NOT NULL THEN 'RENTED'
+                    ELSE 'AVAILABLE'
+               END AS status
+        FROM properties p
+        LEFT JOIN agreements a ON a.property_id = p.id
+    """;
+
+        try {
+            Connection conn = DatabaseConnect.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+
+            System.out.println("\nAll properties:");
+
+            while (rs.next()) {
+                System.out.println(
+                        "ID: " + rs.getInt("id") +
+                                ", Type: " + rs.getString("type") +
+                                ", Size: " + rs.getInt("size") +
+                                ", Status: " + rs.getString("status")
+                );
+            }
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteProperty(int id) {
+
+        String sql = "DELETE FROM properties WHERE id = ?";
+
+        try {
+            Connection conn = DatabaseConnect.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setInt(1, id);
+
+            int rows = stmt.executeUpdate();
+
+            if (rows > 0) {
+                System.out.println("Property deleted.");
+            } else {
+                System.out.println("Property not found.");
+            }
+
+            stmt.close();
+            conn.close();
 
         } catch (Exception e) {
             e.printStackTrace();

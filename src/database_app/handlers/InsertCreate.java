@@ -14,7 +14,6 @@ import static database_app.handlers.HandlerInsert.readIntOrZero;
 public class InsertCreate {
     public static void CreateOwnerPerson(Scanner scanner){
         System.out.println("Enter person id or 0 to create new person");
-        System.out.print("Choose: ");
 
         int choiceOP = readIntOrZero(scanner);
         if (choiceOP == 0 ) {
@@ -29,7 +28,6 @@ public class InsertCreate {
 
     public static void CreateOwnerCompany(Scanner scanner){
         System.out.println("Enter company id or 0 to create new company");
-        System.out.print("Choose: ");
 
         int choiceOC = readIntOrZero(scanner);
         if (choiceOC == 0 ) {
@@ -44,7 +42,6 @@ public class InsertCreate {
 
     public static void CreateTenant(Scanner scanner){
         System.out.println("Enter person id or 0 to create new person");
-        System.out.print("Choose: ");
 
         int choiceTenant = readIntOrZero(scanner);
         scanner.nextLine();
@@ -67,7 +64,6 @@ public class InsertCreate {
 
     public static void CreateEmployee(Scanner scanner){
         System.out.println("Enter person id or 0 to create new person");
-        System.out.print("Choose: ");
 
         int choiceEmployee= readIntOrZero(scanner);
         scanner.nextLine();

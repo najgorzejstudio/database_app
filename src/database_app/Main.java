@@ -1,4 +1,5 @@
 package database_app;
+import database_app.handlers.HandlerDelete;
 import database_app.handlers.HandlerInsert;
 import database_app.handlers.HandlerShow;
 import database_app.handlers.HandlerUpdate;
@@ -18,6 +19,7 @@ public class Main {
             System.out.println("1. Insert");
             System.out.println("2. Show");
             System.out.println("3. Update");
+            System.out.println("4. Delete");
             System.out.println("0. Exit");
             System.out.print("Choose option: ");
 
@@ -33,6 +35,9 @@ public class Main {
                     break;
                 case 3:
                     HandlerUpdate.handleUpdate(scanner);
+                    break;
+                case 4:
+                    HandlerDelete.handleDelete(scanner);
                     break;
                 case 0:
                     System.out.println("Exiting..");

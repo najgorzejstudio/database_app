@@ -5,22 +5,24 @@ import java.util.Scanner;
 
 public class Agreement {
 
-    private int id;
+    private Integer id;
     private LocalDate signingDate;
     private LocalDate endDate;
     private int ownerId;
+    private String ownerType;
     private int tenantId;
     private int propertyId;
 
-    public Agreement(LocalDate signingDate, LocalDate endDate, int ownerId, int tenantId, int propertyId) {
+    public Agreement(LocalDate signingDate, LocalDate endDate, int ownerId, int tenantId, int propertyId, String ownerType) {
         this.signingDate = signingDate;
         this.endDate = endDate;
         this.ownerId = ownerId;
+        this.ownerType = ownerType;
         this.tenantId = tenantId;
         this.propertyId = propertyId;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -32,7 +34,7 @@ public class Agreement {
         return endDate;
     }
 
-    public int getOwnerId() {
+    public Integer getOwnerId() {
         return ownerId;
     }
 
@@ -42,6 +44,10 @@ public class Agreement {
 
     public int getPropertyId() {
         return propertyId;
+    }
+
+    public String getOwnerType() {
+        return ownerType;
     }
 
 
@@ -69,6 +75,10 @@ public class Agreement {
         this.propertyId = propertyId;
     }
 
+    public void setOwnerType(String ownerType) {
+        this.ownerType = ownerType;
+    }
+
     public static Agreement create(Scanner scanner) {
 
         System.out.print("Enter signing date (YYYY-MM-DD): ");
@@ -81,6 +91,23 @@ public class Agreement {
         int ownerId = scanner.nextInt();
         scanner.nextLine();
 
+        System.out.print("Enter owner type: ");
+        System.out.print("1. person: ");
+        System.out.print("2. company: ");
+        int ownerType = scanner.nextInt();
+        scanner.nextLine();
+
+        String ownerTypeStr = "";
+
+        if (ownerType == 1){
+            ownerTypeStr = "person";
+        } else if (ownerType == 2){
+            ownerTypeStr = "company";
+        }else{
+            System.out.print("Invalid choice");
+            return null;
+        }
+
         System.out.print("Enter tenant id: ");
         int tenantId = scanner.nextInt();
         scanner.nextLine();
@@ -89,7 +116,7 @@ public class Agreement {
         int propertyId = scanner.nextInt();
         scanner.nextLine();
 
-        return new Agreement(signingDate, endDate, ownerId, tenantId, propertyId);
+        return new Agreement(signingDate, endDate, ownerId, tenantId, propertyId, ownerTypeStr);
     }
 
     public static Agreement update(Agreement a, Scanner scanner) {

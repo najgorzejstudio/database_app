@@ -21,6 +21,7 @@ public class HandlerInsert {
         System.out.println("5. Branch");
         System.out.println("6. Contact");
         System.out.println("7. Ownership");
+        System.out.println("8. Viewing");
         System.out.println("0. Go Back");
         System.out.print("Choose: ");
 
@@ -48,6 +49,9 @@ public class HandlerInsert {
                 break;
             case 7:
                 handleOwnershipInsert(scanner);
+                break;
+            case 8:
+                handleViewingInsert(scanner);
                 break;
             case 0:
                 System.out.println("Returning..");
@@ -131,6 +135,11 @@ public class HandlerInsert {
         }
     }
 
+    static void handleViewingInsert(Scanner scanner){
+        Viewing v = Viewing.create(scanner);
+        EntityService.insertViewing(v);
+    }
+
     static void handleRentalListingInsert(Scanner scanner){
         System.out.println("Enter property ID: ");
         int choice = readIntOrZero(scanner);
@@ -160,59 +169,16 @@ public class HandlerInsert {
     }
 
 
-    static void handleAgreementInsert(Scanner scanner){
-        System.out.println("Enter owner id and type or 0 to not assign owner: ");
-        int choice = readIntOrZero(scanner);
-        scanner.nextLine();
-        String type = "";
+    static void handleAgreementInsert(Scanner scanner) {
 
-        if (choice != 0) {
-            System.out.println("Choose owner type: ");
-            System.out.println("1. person");
-            System.out.println("2. company");
-            int choiceType = readIntOrZero(scanner);
-            scanner.nextLine();
+        Agreement a = Agreement.create(scanner);
 
-            if (choiceType == 1 ){
-                type = "person";
-            }else{
-                type = "company";
-            }
-        }
-        System.out.println("Enter starting date like 'YYYY-MM-DD': ");
-        String start_date = scanner.nextLine();
-        if (start_date.isEmpty()) {
+        if (a == null) {
+            System.out.println("Agreement creation failed.");
             return;
         }
 
-        try {
-            LocalDate.parse(start_date);
-        } catch (DateTimeParseException e) {
-            System.out.println("Invalid date format.");
-            return;
-        }
-
-        System.out.println("Enter end date like 'YYYY-MM-DD': ");
-        String end_date = scanner.nextLine();
-        if (end_date.isEmpty()) {
-            return;
-        }
-
-        try {
-            LocalDate.parse(end_date);
-        } catch (DateTimeParseException e) {
-            System.out.println("Invalid date format.");
-            return;
-        }
-
-        System.out.println("Enter tenant id: ");
-        int tenant_id = readIntOrZero(scanner);
-
-        System.out.println("Enter property id: ");
-        int property_id = readIntOrZero(scanner);
-
-        EntityService.insertAgreement(start_date, end_date, choice, type, tenant_id, property_id);
-
+        EntityService.insertAgreement(a);
     }
 
     static void handleBranchInsert(Scanner scanner){
