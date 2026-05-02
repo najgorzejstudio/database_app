@@ -129,37 +129,214 @@ public class PersonService {
         }
     }
 
+    public static Employee getEmployeeById(int id) {
 
-    public static void showAllPersons() {
-
-        String sql = "SELECT * FROM persons";
+        String sql = "SELECT * FROM employees WHERE id = ?";
 
         try {
             Connection conn = DatabaseConnect.getConnection();
-            Statement stmt = conn.createStatement();
+            PreparedStatement stmt = conn.prepareStatement(sql);
 
-            ResultSet rs = stmt.executeQuery(sql);
+            stmt.setInt(1, id);
 
-            System.out.println("\n--- PERSONS ---");
+            ResultSet rs = stmt.executeQuery();
 
-            boolean isEmpty = true;
+            if (rs.next()) {
 
-            while (rs.next()) {
-                isEmpty = false;
-                int id = rs.getInt("id");
-                String name = rs.getString("first_name");
+                Integer branchId = rs.getObject("branch_id") != null ? rs.getInt("branch_id") : null;
+                Integer salary = rs.getObject("salary") != null ? rs.getInt("salary") : null;
 
-                System.out.println("ID: " + id + " | Name: " + name);
+                Employee e = new Employee(
+                        rs.getInt("id"),
+                        branchId,
+                        rs.getString("position"),
+                        salary
+                );
+
+                rs.close();
+                stmt.close();
+                conn.close();
+
+                return e;
             }
 
-            if (isEmpty) {
-                System.out.println("No persons found.");
+            rs.close();
+            stmt.close();
+            conn.close();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static void updateEmployee(Employee e) {
+
+        String sql = "UPDATE employees SET branch_id = ?, position = ?, salary = ? WHERE id = ?";
+
+        try {
+            Connection conn = DatabaseConnect.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            if (e.getBranchId() == null) {
+                stmt.setNull(1, java.sql.Types.INTEGER);
+            } else {
+                stmt.setInt(1, e.getBranchId());
             }
 
+            stmt.setString(2, e.getPosition());
+
+            if (e.getSalary() == null) {
+                stmt.setNull(3, java.sql.Types.INTEGER);
+            } else {
+                stmt.setInt(3, e.getSalary());
+            }
+
+            stmt.setInt(4, e.getId());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            conn.close();
+
+            System.out.println("Employee updated.");
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static Person getPersonById(int id) {
+
+        String sql = "SELECT * FROM persons WHERE id = ?";
+
+        try {
+            Connection conn = DatabaseConnect.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setInt(1, id);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                Person p = new Person(
+                        rs.getString("first_name"),
+                        rs.getString("middle_name"),
+                        rs.getString("last_name"),
+                        rs.getString("gender"),
+                        rs.getObject("address_id") != null ? rs.getInt("address_id") : null
+                );
+
+                p.setId(rs.getInt("id"));
+
+                rs.close();
+                stmt.close();
+                conn.close();
+
+                return p;
+            }
+
+            rs.close();
+            stmt.close();
             conn.close();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return null;
     }
+
+    public static Integer getTenantById(int id) {
+
+        String sql = "SELECT * FROM tenants WHERE id = ?";
+
+        try {
+            Connection conn = DatabaseConnect.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setInt(1, id);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                int branch_id = rs.getInt("branch_id");
+
+
+                rs.close();
+                stmt.close();
+                conn.close();
+
+                return branch_id;
+            }
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static void updatePerson(Person p) {
+
+        String sql = "UPDATE persons SET first_name=?, middle_name=?, last_name=?, gender=?, address_id=? WHERE id=?";
+
+        try {
+            Connection conn = DatabaseConnect.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setString(1, p.getFirstName());
+            stmt.setString(2, p.getMiddleName());
+            stmt.setString(3, p.getLastName());
+            stmt.setString(4, p.getGender());
+
+            if (p.getAddressId() == null) {
+                stmt.setNull(5, java.sql.Types.INTEGER);
+            } else {
+                stmt.setInt(5, p.getAddressId());
+            }
+
+            stmt.setInt(6, p.getId());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            conn.close();
+
+            System.out.println("Person updated.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateTenant(int id, int branch_id) {
+
+        String sql = "UPDATE tenant SET branch_id=? WHERE id=?";
+
+        try {
+            Connection conn = DatabaseConnect.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setInt(1, branch_id);
+            stmt.setInt(2, id);
+
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            conn.close();
+
+            System.out.println("Tenant updated.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -20,6 +20,7 @@ public class HandlerInsert {
         System.out.println("4. Agreement");
         System.out.println("5. Branch");
         System.out.println("6. Contact");
+        System.out.println("7. Ownership");
         System.out.println("0. Go Back");
         System.out.print("Choose: ");
 
@@ -41,6 +42,12 @@ public class HandlerInsert {
                 break;
             case 5:
                 handleBranchInsert(scanner);
+                break;
+            case 6:
+                handleContactInsert(scanner);
+                break;
+            case 7:
+                handleOwnershipInsert(scanner);
                 break;
             case 0:
                 System.out.println("Returning..");
@@ -83,6 +90,9 @@ public class HandlerInsert {
 
                     case 0:
                         return;
+
+                    default:
+                        System.out.println("Invalid Option");
                 }
                 break;
 
@@ -220,6 +230,61 @@ public class HandlerInsert {
         }
         EntityService.insertBranch(manager_id, address_id);
 
+    }
+
+    static void handleOwnershipInsert(Scanner scanner){
+        System.out.println("Enter property id: ");
+        int property_id = readIntOrZero(scanner);
+
+
+        System.out.print("Enter owner id: ");
+        int owner_id = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Enter owner type: ");
+        System.out.print("1. Person ");
+        System.out.print("2. Company");
+        int type = scanner.nextInt();
+        scanner.nextLine();
+
+        String owner_type = "";
+
+        if (type == 1){
+            owner_type = "person";
+        } else if (type == 2) {
+            owner_type = "company";
+        }else {
+            System.out.print("Invalid type.");
+            return;
+        }
+        EntityService.insertOwnership(property_id, owner_id, owner_type);
+
+    }
+
+    static void handleContactInsert(Scanner scanner) {
+        System.out.println("Add contact info to: ");
+        System.out.println("1. Person");
+        System.out.println("2. Company");
+        System.out.println("3. Branch");
+        System.out.print("Choose: ");
+
+        int choiceOwner = readIntOrZero(scanner);
+        switch (choiceOwner) {
+            case 1:
+                CreatePersonContact(scanner);
+                break;
+
+            case 2:
+                CreateCompanyContact(scanner);
+                break;
+
+            case 3:
+                CreateBranchContact(scanner);
+                break;
+
+            default:
+                System.out.println("Invalid Option");
+        }
     }
 
     public static Integer readIntOrZero(Scanner scanner) {

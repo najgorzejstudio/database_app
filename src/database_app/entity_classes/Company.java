@@ -26,7 +26,17 @@ public class Company {
 
 
     public void setId(int id) { this.id = id; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setAddressId(Integer addressId) {
+        this.addressId = addressId;
+    }
 
     public static Company create(Scanner scanner) {
 
@@ -46,5 +56,42 @@ public class Company {
         }
 
         return new Company(name, type, address_id);
+    }
+
+    public static Company update(Company c, Scanner scanner) {
+
+        System.out.print("Enter company name (leave empty to keep '" + c.getName() + "'): ");
+        String name = scanner.nextLine();
+        if (!name.isEmpty()) {
+            c.setName(name);
+        }
+
+        System.out.print("Enter company type (leave empty to keep '" + c.getType() + "'): ");
+        String type = scanner.nextLine();
+        if (!type.isEmpty()) {
+            c.setType(type);
+        }
+
+        System.out.print("Enter address id or 0 to create new (leave empty to keep current): ");
+        String input = scanner.nextLine();
+
+        if (!input.isEmpty()) {
+            try {
+                int addressId = Integer.parseInt(input);
+
+                if (addressId == 0) {
+                    Address a = Address.create(scanner);
+                    AddressContactService.insertAddress(a);
+                    c.setAddressId(a.getId());
+                } else {
+                    c.setAddressId(addressId);
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid number. Address unchanged.");
+            }
+        }
+
+        return c;
     }
 }

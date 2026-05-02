@@ -25,6 +25,21 @@ public class Address {
     public String getZipCode() { return zipCode; }
 
     public void setId(int id) { this.id = id; }
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public void setStreetNumber(String streetNumber) {
+        this.streetNumber = streetNumber;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
 
     public static Address create(Scanner scanner) {
 
@@ -41,5 +56,34 @@ public class Address {
         String zip = scanner.nextLine();
 
         return new Address(street, streetNumber, city, zip);
+    }
+
+    public static Address update(Address a, Scanner scanner) {
+
+        System.out.print("Enter street (leave empty to keep '" + a.getStreet() + "'): ");
+        String street = scanner.nextLine();
+        if (!street.isEmpty()) {
+            a.setStreet(street);
+        }
+
+        System.out.print("Enter street number (leave empty to keep '" + a.getStreetNumber() + "'): ");
+        String streetNumber = scanner.nextLine();
+        if (!streetNumber.isEmpty()) {
+            a.setStreetNumber(streetNumber);
+        }
+
+        System.out.print("Enter city (leave empty to keep '" + a.getCity() + "'): ");
+        String city = scanner.nextLine();
+        if (!city.isEmpty()) {
+            a.setCity(city);
+        }
+
+        System.out.print("Enter zip code (leave empty to keep '" + a.getZipCode() + "'): ");
+        String zipCode = scanner.nextLine();
+        if (!zipCode.isEmpty()) {
+            a.setZipCode(zipCode);
+        }
+
+        return a;
     }
 }

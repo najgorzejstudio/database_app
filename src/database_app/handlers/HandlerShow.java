@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class HandlerShow {
 
     public static void handleShow(Scanner scanner) {
-        PersonService.showAllPersons();
+
     }
 
 }
